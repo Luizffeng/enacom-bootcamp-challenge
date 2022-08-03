@@ -1,4 +1,3 @@
-from pydoc import text
 import re
 import pandas as pd
 
@@ -7,11 +6,10 @@ from unicodedata import normalize
 
 class Data:
     # Classe responsável por obter dados e retornar um dataframe (pandas)
-
     def __init__(self, text):
         self.text = text
 
-    # factory
+    # Factory
     @staticmethod
     def read(path):
         reader = PdfReader(path)
@@ -21,20 +19,21 @@ class Data:
 
         return Data(text)
 
-    # 
+
+    # Clear text
     def remove_accents(self):  
         try:
             return normalize("NFKD", self.text).encode("ASCII", "ignore").decode("ASCII")
         except Exception:
-            return text
+            return self.text
 
 
+    # Extrai dados do pdf
     def pdftodata(self):
         text = self.text
         text = self.remove_accents()
         lines = text.split("\n")
         
-
         # Variables
         i = 0
         table_flag = False
@@ -46,6 +45,7 @@ class Data:
             r'(?P<retorno>\d+\.\d+)\s*$'
         )
 
+        item = None
         desc = None
         custo = None
         retorno = None
@@ -64,12 +64,16 @@ class Data:
             if table_flag:
                 candidate = re.search(regex_pattern, lines[i])
                 if candidate:
+                    index = int(candidate.group('index'))
+                    item = f'Opção {index}'
+
                     desc = candidate.group('desc')
                     custo = int(candidate.group('custo').replace(".", ""))
                     retorno = int(candidate.group('retorno').replace(".", ""))
 
                     items.append(
-                            [
+                            [   
+                                item,
                                 desc,
                                 custo,
                                 retorno
@@ -78,21 +82,21 @@ class Data:
 
             if table_flag and not candidate:
                 table_flag = False
-                #print("FECHOU ITENS")
 
             i += 1
 
         # Cria dataframe com os Items
-        dataframe = pd.DataFrame(
+        df = pd.DataFrame(
             items,
             columns=[
-                "desc",
-                "custo",
-                "retorno"
+                "Opção",
+                "Descrição",
+                "Custo",
+                "Retorno"
             ]
         )
 
-        return dataframe
+        return df
 
 
 

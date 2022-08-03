@@ -1,13 +1,11 @@
 import numpy as np
 import pandas as pd
 from typing import List
-from tkinter import E
-from data import Data
 from dataclasses import dataclass
 
 @dataclass
 class ValuableItem:
-    index: int
+    item: int
     custo: int
     retorno: int
 
@@ -18,7 +16,7 @@ class ValuableItem:
 
 def items_to_table(items: List[ValuableItem]) -> pd.DataFrame:
     records = [{
-            'Item': i.index,
+            'Item': i.item,
             'Custo (R$)': i.custo,
             'Retorno (R$)': i.retorno
         } for i in items]
@@ -40,13 +38,10 @@ def greedy_knapsack(
         if item.custo <= orcamento:
             chosen_items.append(item)
             orcamento -= item.custo
-        else:
-            break
     return chosen_items
 
 
-def resolve(custo, retorno, orcamento) -> pd.DataFrame:
-    available_items = [ValuableItem(f'Opção {i+1}', v, w) for i, (v, w) in enumerate(zip(custo, retorno))]
-    print(items_to_table(available_items))
+def resolve(df, orcamento) -> pd.DataFrame:
+    available_items = [ValuableItem(u, v, w) for i, (u, v, w) in enumerate(zip(df['Opção'], df['Custo'], df['Retorno']))]
     chosen_items = greedy_knapsack(orcamento, available_items)
     return chosen_items
