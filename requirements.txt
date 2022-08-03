@@ -1,0 +1,7 @@
+numpy==1.23.1
+pandas==1.4.3
+pdftotext==2.2.2
+pyPdf==1.13
+PyPDF2==2.9.0
+six==1.16.0
+tabula-py==2.4.0
