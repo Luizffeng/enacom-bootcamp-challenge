@@ -45,3 +45,38 @@ def resolve(df, orcamento) -> pd.DataFrame:
     available_items = [ValuableItem(u, v, w) for i, (u, v, w) in enumerate(zip(df['Opção'], df['Custo'], df['Retorno']))]
     chosen_items = greedy_knapsack(orcamento, available_items)
     return chosen_items
+
+# Cria uma lista de 'chosen_items', tranforma cada um
+# em um modelo contido em 'models' e faz uma comparação,
+# retornando um dict de solution
+def solution(df_list: list[pd.DataFrame], orcamento) -> list:
+    chosen_items_list = []
+    for case in df_list:
+        chosen_items_list.append(resolve(case[0], orcamento))
+
+    results, models = [], []
+    for i in range(len(chosen_items_list)):
+        results.append({'Items': [], 'Custo': 0, 'Retorno': 0})
+        models.append([results[i], chosen_items_list[i]])
+
+    for model in models:
+        for item in model[1]:
+            model[0]['Items'].append(item.item)
+            model[0]['Custo'] += item.custo
+            model[0]['Retorno'] += item.retorno
+
+    max_retorno = 0
+    custo_total = 0
+    options = []
+    for model in models:
+        if model[0]['Retorno'] > max_retorno:
+            max_retorno = model[0]['Retorno']
+            custo_total = model[0]['Custo']
+            options = model[0]['Items']
+            options.sort()
+
+    return {
+        'Opções': options, 
+        'Custo': custo_total, 
+        'Retorno': max_retorno
+        }

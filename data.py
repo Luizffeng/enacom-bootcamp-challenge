@@ -19,14 +19,12 @@ class Data:
 
         return Data(text)
 
-
     # Clear text
     def remove_accents(self):  
         try:
             return normalize("NFKD", self.text).encode("ASCII", "ignore").decode("ASCII")
         except Exception:
             return self.text
-
 
     # Extrai dados do pdf
     def pdftodata(self):
