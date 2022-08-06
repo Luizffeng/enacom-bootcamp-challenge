@@ -75,8 +75,10 @@ def solution(df_list: list[pd.DataFrame], orcamento) -> list:
             options = model[0]['Items']
             options.sort()
 
-    return {
+    solution = {
         'Opções': options, 
         'Custo': custo_total, 
         'Retorno': max_retorno
         }
+
+    return solution
