@@ -60,9 +60,7 @@ def solution(case_array: list, mmc=1) -> list:
         #print(binary_matrix)
         print('>>>>', value_matrix[-1][-1])
 
-
-
-    #print(value_matrix)
-    #print(binary_matrix)
+    ##print(value_matrix)
+    ##print(binary_matrix)
 
     return 

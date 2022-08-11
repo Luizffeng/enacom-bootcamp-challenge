@@ -3,6 +3,7 @@ import pandas as pd
 
 import heuristic
 import dynamic_recursion as dynamic
+import random_selection
 from data import Data
 
 ### Setup
@@ -15,7 +16,7 @@ locale.setlocale(locale.LC_ALL, 'pt_BR')
 ### Dataframe
 path = 'ENACOM Optimization Bootcamp - Desafio.pdf'
 df = Data.read(path).pdftodata()    # Lê o pdf e extrai os dados para um Dataframe
-df_and = df.copy()  # Faz um cópia do DF original para aplicar as restrições
+df_ = df.copy()  # Faz um cópia do DF original para aplicar as restrições
 
 
 ### Rules
@@ -25,18 +26,28 @@ orcamento = 10**6
 ### Restrictions
 soma_custo = df['Custo'].iloc[1] + df['Custo'].iloc[3]
 soma_retorno = df['Retorno'].iloc[1] + df['Retorno'].iloc[3]
-df_and.loc[1]=['Opção 2+4', 'OPÇÃO AUXILIAR PARA REPRESENTAR OPÇÕES 2 E 4', soma_custo, soma_retorno]
-df_and = df_and.drop(3) # Dataframe contendo a opção 2+4
+df_2_4, df_4 = df_.copy(), df_.copy()
 
-table_1 = df_and.drop(4)   # Dataframe contendo a opção 1 e removendo a opção 5
-table_5 = df_and.drop(0)   # Dataframe contendo a opção 5 e removendo a opção 1
+df_2_4.loc[df['Opção'] == 'Opção 2'] = ['Opção 2+4', 'OPÇÃO AUXILIAR PARA REPRESENTAR OPÇÕES 2 E 4', soma_custo, soma_retorno]
+df_2_4 = df_2_4.drop(df.index[df['Opção'] == 'Opção 4']) # Dataframe contendo a opção 2+4
+df_4 = df_.drop(df.index[df['Opção'] == 'Opção 2']) # DF contendo a opção 4 e excluindo a opção 2
+
+df_1_2_4 = df_2_4.drop(df.index[df['Opção'] == 'Opção 5'])   # Dataframe contendo a opção 1 e 2+4
+df_5_2_4 = df_2_4.drop(df.index[df['Opção'] == 'Opção 1'])   # Dataframe contendo a opção 5 e 2+4
+df_1_4 = df_4.drop(df.index[df['Opção'] == 'Opção 5'])   # Dataframe contendo a opção 1 e 4 (apenas)
+df_5_4 = df_4.drop(df.index[df['Opção'] == 'Opção 1'])   # Dataframe contendo a opção 5 e 4 (apenas)
 
 
 # Array contendo os cases específicos
 # Vale lembrar que, separando o orçamento das demais 
-# restrições (cases), podemos também trabalhar com diversos orçamentos por case
+# restrições (cases), podemos também trabalhar com o mesmo
 #case_array = [[table_1, orcamento], [table_5, orcamento]] 
-case_array = [[table_1, orcamento]]
+case_array = [
+    [df_1_2_4, orcamento],
+    [df_5_2_4, orcamento],
+    [df_1_4, orcamento],
+    [df_5_4, orcamento]
+    ]
 
 
 ### Resolve
@@ -49,8 +60,12 @@ case_array = [[table_1, orcamento]]
 heuristic_solution = heuristic.solution(case_array, orcamento)
 
 # Heurística de recursão dinâmica
-dynamic_solution_0 = dynamic.solution(case_array, 10000)
+dynamic_solution_0 = dynamic.solution(case_array, orcamento, 10000)
 #dynamic_solution_1 = dynamic.solution(case_array[1], orcamento[0], 10000)
+
+# Heurística aleatória
+random_solution = random_selection.solution(case_array, 3)
+print(random_solution)
 
 # Algoritmo Genético
 
