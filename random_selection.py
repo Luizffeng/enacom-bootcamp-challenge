@@ -3,21 +3,6 @@ import pandas as pd
 from typing import List
 from dataclasses import dataclass, replace
 
-@dataclass
-class DataClass:
-    item: int
-    custo: int
-    retorno: int
-
-
-def items_to_table(items: List[DataClass]) -> pd.DataFrame:
-    records = [{
-            'Item': i.item,
-            'Custo (R$)': i.custo,
-            'Retorno (R$)': i.retorno
-        } for i in items]
-    return pd.DataFrame.from_records(records)
-
 def solution(case_array: list, max_iter: int):
     max_custo, max_retorno = 0, 0
     
@@ -28,9 +13,7 @@ def solution(case_array: list, max_iter: int):
         for i in range(max_iter):
             for j in range(_df.shape[0]):
                 df = _df.sample(n = j, replace = False)
-                #print(df)
                 if df['Custo'].sum() <= _orcamento and df['Retorno'].sum() > max_retorno:
-                    #print('SIMMMMMMMMM')
                     solution = df
                     max_custo = df['Custo'].sum()
                     max_retorno = df['Retorno'].sum()

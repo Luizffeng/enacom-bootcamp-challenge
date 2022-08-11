@@ -42,7 +42,7 @@ def solution(case_array: list, orcamento: int, mmc=1) -> list:
                     value_matrix[i][j] = value_matrix[i][j-1]
 
 
-    print(value_matrix)
-    print(binary_matrix)
+    #print(value_matrix)
+    #print(binary_matrix)
 
     return 
