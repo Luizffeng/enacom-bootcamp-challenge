@@ -1,31 +1,38 @@
 import numpy as np
 import pandas as pd
-from typing import List
 from dataclasses import dataclass, replace
 
-def solution(case_array: list, max_iter: int):
-    max_custo, max_retorno = 0, 0
-    
+def solution(case_array: list[pd.DataFrame, int], max_iter: int) -> list:
+    custo, retorno = 0, 0
+    results = []
     for case in case_array:
-        _orcamento = case[1]
-        _df = case[0]
+        _orcamento = case.copy()[1]
+        _df = case.copy()[0]
         
         for i in range(max_iter):
             for j in range(_df.shape[0]):
                 df = _df.sample(n = j, replace = False)
-                if df['Custo'].sum() <= _orcamento and df['Retorno'].sum() > max_retorno:
-                    solution = df
-                    max_custo = df['Custo'].sum()
-                    max_retorno = df['Retorno'].sum()
+                if df['Custo'].sum() <= _orcamento and df['Retorno'].sum() > retorno:
+                    result = df['Opção'].to_list()
+                    custo = df['Custo'].sum()
+                    retorno = df['Retorno'].sum()
+                    results.append([result, custo, retorno])
 
-    options = []
-    for index, row in solution.iterrows():
-        options.append(row['Opção'])
+        result, max_custo, max_retorno = None, 0, 0
+    
+    for result in results:
+        if result[2] >= max_retorno:
+            max_retorno = result[2]
+            max_custo = result[1]
+            solution = result[0]
 
-    solution = {
-        'Opções': options, 
-        'Custo': max_custo, 
+        elif result[2] == max_retorno:
+            if result[1] <= max_custo:
+                max_custo = result[1]
+                solution = result[0]
+    
+    return {
+        'Opções': solution,
+        'Custo': max_custo,
         'Retorno': max_retorno
-        }
-
-    return solution
+    }

@@ -49,10 +49,12 @@ def resolve(df, orcamento) -> pd.DataFrame:
 # Cria uma lista de 'chosen_items', tranforma cada um
 # em um modelo contido em 'models' e faz uma comparação,
 # retornando um dict de solution
-def solution(df_list: list[pd.DataFrame], orcamento) -> list:
+#def solution(df_list: list[pd.DataFrame], orcamento) -> list:
+def solution(case_array: list[pd.DataFrame, int]) -> list:
     chosen_items_list = []
-    for case in df_list:
-        chosen_items_list.append(resolve(case[0], orcamento))
+    for case in case_array:
+        #print(case)
+        chosen_items_list.append(resolve(case[0], case[1]))
 
     results, models = [], []
     for i in range(len(chosen_items_list)):
@@ -75,10 +77,8 @@ def solution(df_list: list[pd.DataFrame], orcamento) -> list:
             options = model[0]['Items']
             options.sort()
 
-    solution = {
+    return {
         'Opções': options, 
         'Custo': custo_total, 
         'Retorno': max_retorno
         }
-
-    return solution

@@ -2,7 +2,7 @@ import locale
 import pandas as pd
 
 import heuristic
-import dynamic_recursion as dynamic
+import dynamic_recursion
 import random_selection
 from data import Data
 
@@ -41,14 +41,14 @@ df_5_4 = df_4.drop(df.index[df['Opção'] == 'Opção 1'])   # Dataframe contend
 # Array contendo os cases específicos
 # Vale lembrar que, separando o orçamento das demais 
 # restrições (cases), podemos também trabalhar com o mesmo
-#case_array = [[table_1, orcamento], [table_5, orcamento]] 
+
 case_array = [
-    [df_1_2_4, orcamento],
-    [df_5_2_4, orcamento],
-    [df_1_4, orcamento],
+    #[df_1_2_4, orcamento],
+    #[df_5_2_4, orcamento],
+    #[df_1_4, orcamento],
     [df_5_4, orcamento]
     ]
-
+print(case_array)
 
 ### Resolve
 # Calcular o conjunto de opções ótimas para
@@ -57,15 +57,19 @@ case_array = [
 # com o método
 
 # Heurística gulosa
-heuristic_solution = heuristic.solution(case_array, orcamento)
+heuristic_solution = heuristic.solution(case_array)
+print('heuristic_solution         \n', heuristic_solution)
 
-# Heurística de recursão dinâmica
-dynamic_solution_0 = dynamic.solution(case_array, orcamento, 10000)
+
 #dynamic_solution_1 = dynamic.solution(case_array[1], orcamento[0], 10000)
 
 # Heurística aleatória
 random_solution = random_selection.solution(case_array, 3)
-print(random_solution)
+print('random_solution         \n', random_solution)
+
+# Heurística de recursão dinâmica
+dynamic_solution = dynamic_recursion.solution(case_array, 10000)
+print('dynamic_solution         \n', dynamic_solution)
 
 # Algoritmo Genético
 
@@ -73,7 +77,7 @@ print(random_solution)
 
 
 ### Mensagens
-t = ''
+'''t = ''
 for i in heuristic_solution['Opções']:
     aux = df[df['Opção'] == i]['Descrição'].to_string(index=False)
     t += f'    - {i}: {aux}\n'
@@ -83,5 +87,5 @@ msg = (
     f'\nEsta solução consome {currency(heuristic_solution["Custo"])}'
     f' do orçamento e tem um retorno de {currency(heuristic_solution["Retorno"])}!!!'
 )
-#print(msg)
+#print(msg)'''
 
