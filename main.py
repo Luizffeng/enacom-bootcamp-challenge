@@ -13,6 +13,18 @@ def currency(value):
 
 locale.setlocale(locale.LC_ALL, 'pt_BR')
 
+# Exibição de resultados
+def print_solutions(solution: dict, solution_name: str):
+    options = solution['Opções']
+    custo = solution['Custo']
+    retorno = solution['Retorno']
+
+    print(f'MÉTODO: {solution_name}')
+    print('O melhor conjunto solução contém:')
+    for option in options: print(f'{option}')
+    print(f'Custo total: {custo} | Retorno total: {retorno}\n')
+    return
+
 
 ### Dataframe
 path = 'ENACOM Optimization Bootcamp - Desafio.pdf'
@@ -61,11 +73,9 @@ heuristic_solution = heuristic.solution(case_array)
 
 # Heurística aleatória
 random_solution = random_selection.solution(case_array, max_iter=100)
-#print('random_solution:        \n', random_solution)
 
 # Heurística de recursão dinâmica
 dynamic_solution = dynamic_recursion.solution(case_array, mmc=10000)
-#print('dynamic_solution:        \n', dynamic_solution)
 
 # Algoritmo Genético
 
@@ -73,15 +83,6 @@ dynamic_solution = dynamic_recursion.solution(case_array, mmc=10000)
 
 
 ### Mensagens
-'''t = ''
-for i in heuristic_solution['Opções']:
-    aux = df[df['Opção'] == i]['Descrição'].to_string(index=False)
-    t += f'    - {i}: {aux}\n'
-
-msg = (
-    f'\nA melhor solução contém os seguintes investimentos: \n{t}'
-    f'\nEsta solução consome {currency(heuristic_solution["Custo"])}'
-    f' do orçamento e tem um retorno de {currency(heuristic_solution["Retorno"])}!!!'
-)
-#print(msg)'''
-
+print_solutions(heuristic_solution, 'Heurística Gulosa')
+print_solutions(random_solution, 'Seleção Aleatória')
+print_solutions(dynamic_solution, 'Recursão Dinâmica')
