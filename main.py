@@ -13,6 +13,7 @@ def currency(value):
 
 locale.setlocale(locale.LC_ALL, 'pt_BR')
 
+
 ### Dataframe
 path = 'ENACOM Optimization Bootcamp - Desafio.pdf'
 df = Data.read(path).pdftodata()    # Lê o pdf e extrai os dados para um Dataframe
@@ -37,18 +38,16 @@ df_5_2_4 = df_2_4.drop(df.index[df['Opção'] == 'Opção 1'])   # Dataframe con
 df_1_4 = df_4.drop(df.index[df['Opção'] == 'Opção 5'])   # Dataframe contendo a opção 1 e 4 (apenas)
 df_5_4 = df_4.drop(df.index[df['Opção'] == 'Opção 1'])   # Dataframe contendo a opção 5 e 4 (apenas)
 
-
 # Array contendo os cases específicos
 # Vale lembrar que, separando o orçamento das demais 
 # restrições (cases), podemos também trabalhar com o mesmo
-
 case_array = [
-    #[df_1_2_4, orcamento],
-    #[df_5_2_4, orcamento],
-    #[df_1_4, orcamento],
+    [df_1_2_4, orcamento],
+    [df_5_2_4, orcamento],
+    [df_1_4, orcamento],
     [df_5_4, orcamento]
     ]
-print(case_array)
+
 
 ### Resolve
 # Calcular o conjunto de opções ótimas para
@@ -58,18 +57,15 @@ print(case_array)
 
 # Heurística gulosa
 heuristic_solution = heuristic.solution(case_array)
-print('heuristic_solution         \n', heuristic_solution)
-
-
-#dynamic_solution_1 = dynamic.solution(case_array[1], orcamento[0], 10000)
+#print('heuristic_solution:        \n', heuristic_solution)
 
 # Heurística aleatória
-random_solution = random_selection.solution(case_array, 3)
-print('random_solution         \n', random_solution)
+random_solution = random_selection.solution(case_array, max_iter=100)
+#print('random_solution:        \n', random_solution)
 
 # Heurística de recursão dinâmica
-dynamic_solution = dynamic_recursion.solution(case_array, 10000)
-print('dynamic_solution         \n', dynamic_solution)
+dynamic_solution = dynamic_recursion.solution(case_array, mmc=10000)
+#print('dynamic_solution:        \n', dynamic_solution)
 
 # Algoritmo Genético
 

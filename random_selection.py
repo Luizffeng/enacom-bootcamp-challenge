@@ -1,6 +1,5 @@
 import numpy as np
 import pandas as pd
-from dataclasses import dataclass, replace
 
 def solution(case_array: list[pd.DataFrame, int], max_iter: int) -> list:
     custo, retorno = 0, 0
@@ -10,7 +9,7 @@ def solution(case_array: list[pd.DataFrame, int], max_iter: int) -> list:
         _df = case.copy()[0]
         
         for i in range(max_iter):
-            for j in range(_df.shape[0]):
+            for j in range(1, _df.shape[0]):
                 df = _df.sample(n = j, replace = False)
                 if df['Custo'].sum() <= _orcamento and df['Retorno'].sum() > retorno:
                     result = df['Opção'].to_list()
