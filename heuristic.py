@@ -76,7 +76,7 @@ def solution(case_array: list[pd.DataFrame, int]) -> list:
             custo_total = model[0]['Custo']
             options = model[0]['Items']
             options.sort()
-
+    
     return {
         'Opções': options, 
         'Custo': custo_total, 
