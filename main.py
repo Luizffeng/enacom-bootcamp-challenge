@@ -69,7 +69,6 @@ case_array = [
 
 # Heurística gulosa
 heuristic_solution = heuristic.solution(case_array)
-#print('heuristic_solution:        \n', heuristic_solution)
 
 # Heurística aleatória
 random_solution = random_selection.solution(case_array, max_iter=100)

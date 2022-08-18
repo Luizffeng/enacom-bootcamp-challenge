@@ -1,6 +1,6 @@
 import numpy as np
 
-def solution(case_array: list, mmc=1) -> list:
+def solution(case_array: list, mmc=1) -> dict:
     '''
     Utilizando recursão dinâmica, esta função é capaz de encontrar um solução
     convergente, ou seja, é realmente capaz de encontrar o valor ótimo para 
@@ -9,11 +9,16 @@ def solution(case_array: list, mmc=1) -> list:
     o tamanho do dataframe)
     '''
 
+    results = {'Opções': [], 'Custo': 0, 'Retorno': 0}
     for case in case_array:
+        # orçamento
         _orcamento = int(case.copy()[1]/mmc)
-        _df = case.copy()[0]
-        _df.sort_values(by=['Custo'], inplace=True, ascending=True)
-        _df['Custo'], _df['Retorno'] = _df['Custo'].div(mmc), _df['Retorno'].div(mmc)
+
+        # cases
+        _df = case.copy()[0]    # Copia o df de origem
+        _df.sort_values(by=['Custo'], inplace=True, ascending=True) # Ordena os indexes por 'Custo'
+        _df = _df.reset_index(drop=True)    # Reseta os indexes do df
+        _df['Custo'], _df['Retorno'] = _df['Custo'].div(mmc), _df['Retorno'].div(mmc)   # Divide os valores pelo MMC
         
         value_matrix = np.zeros((_orcamento + 1, _df.shape[0] + 1), int)
         binary_matrix = value_matrix.copy()
@@ -41,14 +46,15 @@ def solution(case_array: list, mmc=1) -> list:
                     value_matrix[i][j] = value_matrix[i][j-1]
 
 
+
         # Realiza a iteração inversa, a fim de rastrear a trajetória
         # de construção do valor ótimo
         result, max_custo, max_retorno = [], 0, 0
         i = int(_orcamento)
-        j = int(_df.shape[0] - 1)
+        j = int(_df.shape[0])
         while i >= 1 and j >= 1:
             #print(i, j, value_matrix[100])
-            if value_matrix[i][j] == value_matrix[i][int(j-1)]:
+            if value_matrix[i][j] == value_matrix[i][(j-1)]:
                 j -= 1
                 continue
             
@@ -63,9 +69,20 @@ def solution(case_array: list, mmc=1) -> list:
                 max_retorno += int(_df.iloc[j-1]['Retorno'] * mmc)
                 continue
 
+        # Seleciona o melhor case (df)
+        if max_retorno > results['Retorno']:
+            results['Opções'] = result
+            results['Custo'] = max_custo
+            results['Retorno'] = max_retorno
 
-    return {
-        'Opções': result,
-        'Custo': max_custo,
-        'Retorno': max_retorno
-    }
+        elif max_retorno == results['Retorno'] and max_custo < results['Custo']:
+            results['Opções'] = result
+            results['Custo'] = max_custo
+            results['Retorno'] = max_retorno
+
+        # results: {
+        #   'Opções': [],
+        #   'Custo': int,
+        #   'Retorno': int
+        # }
+    return results
