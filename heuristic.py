@@ -1,5 +1,6 @@
 import numpy as np
 import pandas as pd
+import time
 from typing import List
 from dataclasses import dataclass
 
@@ -51,6 +52,7 @@ def resolve(df, orcamento) -> pd.DataFrame:
 # retornando um dict de solution
 #def solution(df_list: list[pd.DataFrame], orcamento) -> list:
 def solution(case_array: list[pd.DataFrame, int]) -> list:
+    start_time = time.time()
     chosen_items_list = []
     for case in case_array:
         #print(case)
@@ -77,5 +79,11 @@ def solution(case_array: list[pd.DataFrame, int]) -> list:
             options = model[0]['Items']
             options.sort()
     
-    results = {'Opções': options, 'Custo': custo_total, 'Retorno': max_retorno}
+    results = {
+        'Opções': options, 
+        'Custo': custo_total, 
+        'Retorno': max_retorno,
+        'Tempo': time.time() - start_time
+    }
+
     return results

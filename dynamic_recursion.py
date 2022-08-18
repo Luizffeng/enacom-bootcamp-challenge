@@ -1,4 +1,5 @@
 import numpy as np
+import time
 
 def solution(case_array: list, mmc=1) -> dict:
     '''
@@ -8,7 +9,8 @@ def solution(case_array: list, mmc=1) -> dict:
     de iterações necessárias para se alcançar o valor ótimo (serve também para
     o tamanho do dataframe)
     '''
-    results = {'Opções': [], 'Custo': 0, 'Retorno': 0}
+    start_time = time.time()
+    results = {'Opções': [], 'Custo': 0, 'Retorno': 0, 'Tempo': 0}
     for case in case_array:
         # orçamento
         _orcamento = int(case.copy()[1]/mmc)
@@ -74,9 +76,23 @@ def solution(case_array: list, mmc=1) -> dict:
             results['Custo'] = max_custo
             results['Retorno'] = max_retorno
 
+            results = {
+                'Opções': result, 
+                'Custo': max_custo, 
+                'Retorno': max_retorno
+            }
+
         elif max_retorno == results['Retorno'] and max_custo < results['Custo']:
             results['Opções'] = result
             results['Custo'] = max_custo
             results['Retorno'] = max_retorno
+
+            results = {
+                'Opções': result, 
+                'Custo': max_custo, 
+                'Retorno': max_retorno
+            }
+
+    results['Tempo'] = time.time() - start_time
 
     return results

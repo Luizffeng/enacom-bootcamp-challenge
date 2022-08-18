@@ -7,18 +7,16 @@ import random_selection
 from data import InputData, OutputData
 
 ### Setup
+# Currency
 locale.setlocale(locale.LC_ALL, 'pt_BR')
 
+# Rules
+orcamento = 10**6
 
-
-### Dataframe
+# Dataframe
 path = 'ENACOM Optimization Bootcamp - Desafio.pdf'
 df = InputData.read(path).pdftodata()    # Lê o pdf e extrai os dados para um Dataframe
 df_ = df.copy()  # Faz um cópia do DF original para aplicar as restrições
-
-
-### Rules
-orcamento = 10**6
 
 
 ### Restrictions
@@ -56,7 +54,7 @@ case_array = [
 heuristic_solution = heuristic.solution(case_array)
 
 # Heurística aleatória
-random_solution = random_selection.solution(case_array, max_iter=100)
+random_solution = random_selection.solution(case_array, max_iter=10)
 
 # Heurística de recursão dinâmica
 dynamic_solution = dynamic_recursion.solution(case_array, mmc=10000)

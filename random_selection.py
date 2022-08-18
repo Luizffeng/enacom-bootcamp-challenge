@@ -1,7 +1,9 @@
 import numpy as np
 import pandas as pd
+import time
 
 def solution(case_array: list[pd.DataFrame, int], max_iter: int) -> list:
+    start_time = time.time()
     custo, retorno = 0, 0
     results = []
     for case in case_array:
@@ -30,5 +32,11 @@ def solution(case_array: list[pd.DataFrame, int], max_iter: int) -> list:
                 max_custo = result[1]
                 solution = result[0]
 
-    results = {'Opções': solution, 'Custo': max_custo, 'Retorno': max_retorno}
+    results = {
+        'Opções': solution, 
+        'Custo': max_custo, 
+        'Retorno': max_retorno,
+        'Tempo': time.time() - start_time
+        }
+        
     return results

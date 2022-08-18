@@ -108,10 +108,18 @@ class OutputData:
         options = solution['Opções']
         custo = solution['Custo']
         retorno = solution['Retorno']
+        try:
+            tempo = solution['Tempo']
+        except:
+            tempo = None
 
-        print(f'MÉTODO: {solution_name}')
+        print(f'\nMÉTODO: {solution_name}')
         print('O melhor conjunto solução contém:')
-        for option in options: print(f'{option}')
-        print(f'Custo total: {locale.currency(custo, grouping=True)} | Retorno total: {locale.currency(retorno, grouping=True)}\n')
+        for option in options: print(f' - {option}')
+        print(f'Custo total: {locale.currency(custo, grouping=True)} | Retorno total: {locale.currency(retorno, grouping=True)}')
+        if tempo:
+            print(f'Tempo de execução: {round(tempo*1000, 3)} ms')
         return
 
+    def show_solutions(solutions: list[dict]):
+        return
