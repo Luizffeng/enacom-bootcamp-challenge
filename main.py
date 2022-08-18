@@ -4,31 +4,16 @@ import pandas as pd
 import heuristic
 import dynamic_recursion
 import random_selection
-from data import Data
+from data import InputData, OutputData
 
 ### Setup
-# Definição de moeda local
-def currency(value):
-    return locale.currency(value, grouping=True)
-
 locale.setlocale(locale.LC_ALL, 'pt_BR')
 
-# Exibição de resultados
-def print_solutions(solution: dict, solution_name: str):
-    options = solution['Opções']
-    custo = solution['Custo']
-    retorno = solution['Retorno']
-
-    print(f'MÉTODO: {solution_name}')
-    print('O melhor conjunto solução contém:')
-    for option in options: print(f'{option}')
-    print(f'Custo total: {custo} | Retorno total: {retorno}\n')
-    return
 
 
 ### Dataframe
 path = 'ENACOM Optimization Bootcamp - Desafio.pdf'
-df = Data.read(path).pdftodata()    # Lê o pdf e extrai os dados para um Dataframe
+df = InputData.read(path).pdftodata()    # Lê o pdf e extrai os dados para um Dataframe
 df_ = df.copy()  # Faz um cópia do DF original para aplicar as restrições
 
 
@@ -58,7 +43,7 @@ case_array = [
     [df_5_2_4, orcamento],
     [df_1_4, orcamento],
     [df_5_4, orcamento]
-    ]
+]
 
 
 ### Resolve
@@ -82,6 +67,6 @@ dynamic_solution = dynamic_recursion.solution(case_array, mmc=10000)
 
 
 ### Mensagens
-print_solutions(heuristic_solution, 'Heurística Gulosa')
-print_solutions(random_solution, 'Seleção Aleatória')
-print_solutions(dynamic_solution, 'Recursão Dinâmica')
+OutputData.print_solutions(heuristic_solution, 'Heurística Gulosa')
+OutputData.print_solutions(random_solution, 'Seleção Aleatória')
+OutputData.print_solutions(dynamic_solution, 'Recursão Dinâmica')

@@ -1,5 +1,5 @@
 import unittest
-from data import Data
+from data import InputData, OutputData
 import main
 import random_selection, dynamic_recursion, heuristic
 import pandas as pd
@@ -13,13 +13,13 @@ class TestData(unittest.TestCase):
         '''
         - Testa a geração de um texto (string) a partir do arquivo especificado
         '''
-        self.assertIsInstance(Data.read(self.path).text, str, 'Não foi possível extrair um texto (string) a partir do arquivo especificado')
+        self.assertIsInstance(InputData.read(self.path).text, str, 'Não foi possível extrair um texto (string) a partir do arquivo especificado')
 
     def test_pdftotext(self):
         '''
         - Testa a geração de um dataframe a partir do texto (string) lido
         '''
-        self.assertIsInstance(Data.read(self.path).pdftodata(), pd.DataFrame, 'Não foi possível extrair um dataframe a partir do texto (string) lido')
+        self.assertIsInstance(InputData.read(self.path).pdftodata(), pd.DataFrame, 'Não foi possível extrair um dataframe a partir do texto (string) lido')
 
     def tearDown(self):
         self.path = ''
@@ -43,7 +43,7 @@ class TestSolutions(unittest.TestCase):
     def setUp(self):
         self.path = main.path
         self.orcamento = main.orcamento
-        self.df = Data.read(self.path).pdftodata()     
+        self.df = InputData.read(self.path).pdftodata()     
 
     def test_heuristic(self):
         '''

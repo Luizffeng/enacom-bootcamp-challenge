@@ -1,10 +1,11 @@
 import re
 import pandas as pd
+import locale
 
 from PyPDF2 import PdfReader
 from unicodedata import normalize
 
-class Data:
+class InputData:
     # Classe responsável por obter dados e retornar um dataframe (pandas)
     def __init__(self, text):
         self.text = text
@@ -17,7 +18,7 @@ class Data:
         for page in reader.pages:
             text += page.extract_text().upper() + "\n"
 
-        return Data(text)
+        return InputData(text)
 
     # Clear text
     def remove_accents(self):  
@@ -97,4 +98,20 @@ class Data:
         return df
 
 
+class OutputData:
+    # Classe responsável por apresentar os dados ao usuário/cliente
+    
+    # Exibição de resultados
+    @staticmethod
+    def print_solutions(solution: dict, solution_name: str):
+        locale.setlocale(locale.LC_ALL, 'pt_BR')
+        options = solution['Opções']
+        custo = solution['Custo']
+        retorno = solution['Retorno']
+
+        print(f'MÉTODO: {solution_name}')
+        print('O melhor conjunto solução contém:')
+        for option in options: print(f'{option}')
+        print(f'Custo total: {locale.currency(custo, grouping=True)} | Retorno total: {locale.currency(retorno, grouping=True)}\n')
+        return
 

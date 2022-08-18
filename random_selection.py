@@ -29,9 +29,6 @@ def solution(case_array: list[pd.DataFrame, int], max_iter: int) -> list:
             if result[1] <= max_custo:
                 max_custo = result[1]
                 solution = result[0]
-    
-    return {
-        'Opções': solution,
-        'Custo': max_custo,
-        'Retorno': max_retorno
-    }
+
+    results = {'Opções': solution, 'Custo': max_custo, 'Retorno': max_retorno}
+    return results

@@ -8,7 +8,6 @@ def solution(case_array: list, mmc=1) -> dict:
     de iterações necessárias para se alcançar o valor ótimo (serve também para
     o tamanho do dataframe)
     '''
-
     results = {'Opções': [], 'Custo': 0, 'Retorno': 0}
     for case in case_array:
         # orçamento
@@ -80,9 +79,4 @@ def solution(case_array: list, mmc=1) -> dict:
             results['Custo'] = max_custo
             results['Retorno'] = max_retorno
 
-        # results: {
-        #   'Opções': [],
-        #   'Custo': int,
-        #   'Retorno': int
-        # }
     return results
