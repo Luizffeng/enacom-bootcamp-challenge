@@ -1,6 +1,8 @@
 import re
 import pandas as pd
+import numpy as np
 import locale
+import matplotlib.pyplot as plt
 
 from PyPDF2 import PdfReader
 from unicodedata import normalize
@@ -121,5 +123,24 @@ class OutputData:
             print(f'Tempo de execução: {round(tempo*1000, 3)} ms')
         return
 
-    def show_solutions(solutions: list[dict]):
+    def show_solutions(solutions: list[(dict, str)]):
+        methods = []
+        array_custo, array_retorno = [], []
+        for solution in solutions:
+            methods.append(solution[1])
+            array_custo.append(solution[0]['Custo'])
+            array_retorno.append(solution[0]['Retorno'])
+        
+        X_axis = np.arange(len(methods))
+
+        plt.bar(X_axis - 0.2, array_custo, 0.4, label = 'Custo')
+        plt.bar(X_axis + 0.2, array_retorno, 0.4, label = 'Retorno')
+        #plt.bar()
+        
+        plt.xticks(X_axis, methods)
+        plt.xlabel("Groups")
+        plt.ylabel("Valor total")
+        plt.title("Custo e Retorno por Método")
+        plt.legend()
+        plt.show()
         return

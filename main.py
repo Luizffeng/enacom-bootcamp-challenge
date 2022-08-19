@@ -65,6 +65,14 @@ dynamic_solution = dynamic_recursion.solution(case_array, mmc=10000)
 
 
 ### Mensagens
+# Prints
 OutputData.print_solutions(heuristic_solution, 'Heurística Gulosa')
 OutputData.print_solutions(random_solution, 'Seleção Aleatória')
 OutputData.print_solutions(dynamic_solution, 'Recursão Dinâmica')
+
+# Graph
+#OutputData.show_solutions([
+#    (heuristic_solution, 'Heurística Gulosa'),
+#    (random_solution, 'Seleção Aleatória'),
+#    (dynamic_solution, 'Recursão Dinâmica')
+#    ])
